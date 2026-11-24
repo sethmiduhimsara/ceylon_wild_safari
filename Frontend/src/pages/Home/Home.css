@@ -1,5 +1,5 @@
 .wrap {
-  width: min(97%, 1440px);
+  width: max(96%, 1440px);
   margin-inline: auto;
 }
 .mast {
@@ -21,6 +21,7 @@
   align-self: stretch;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 33%;;
   padding: 15px 5%;
   background:#0E160A; 
@@ -280,7 +281,7 @@ dialog p {
 }
 .about img {
   aspect-ratio: 1.25;
-  border-radius: 16px;
+  border-radius: 0px;
 }
 .care h2,
 .journal h2,

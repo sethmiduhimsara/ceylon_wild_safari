@@ -2,6 +2,7 @@
 import PhotoCarousel from '../../components/gallery/PhotoCarousel'
 import { parks, photos, stories } from '../../data/home'
 import heroPhoto from '../../assets/photos/hero1.png'
+import look from '../../assets/photos/look.jpg'
 import './Home.css'
 
 export default function Home() {
@@ -45,7 +46,7 @@ export default function Home() {
         <a className="brand" href="#home">Wild Ceylon Safari</a>
         <button className="menu-toggle" aria-expanded={menuOpen} aria-controls="navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close ×' : 'Menu ☰'}</button>
         <nav id="navigation" className={menuOpen ? 'open' : ''} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
-          <a href="#home">Home</a><a href="#safaris">Explore</a><a href="#services">Services</a><a href="#about">About us</a><a className="pill" href="#contact">Enquire</a>
+          <a href="#home">Home</a><a href="#services">Services</a><a  href="#contact">Enquire</a><a href="#about">About us</a><a className="pill"  href="#safaris">Explore</a>
         </nav>
       </header>
       <main id="main">
@@ -69,7 +70,7 @@ export default function Home() {
           <PhotoCarousel label="safaris" items={parks} action="Explore safari" onSelect={showPreview} />
         </section>
         <section className="about wrap" id="about">
-          <img src={photos.hero.src} alt={photos.hero.alt} loading="lazy" />
+          <img src={photos.look.src} alt={photos.look.alt} loading="lazy" />
           <div><span className="eyebrow">Wild Ceylon Safari</span><h2>Slow down.<br />Look closer.<br />Feel the wild.</h2><p>Explore Sri Lanka’s national parks with a guide, while we photograph the wildlife and the moments in between.</p><a className="pill" href="#services">Our services</a></div>
         </section>
         <section className="care wrap" id="services">
