@@ -1,9 +1,30 @@
-﻿import { useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import PhotoCarousel from '../../components/gallery/PhotoCarousel'
 import { parks, photos, stories } from '../../data/home'
 import heroPhoto from '../../assets/photos/hero1.png'
-import look from '../../assets/photos/look.jpg'
 import './Home.css'
+
+const compactLayout = window.matchMedia('(max-width: 620px)')
+function subscribeToLayout(listener) {
+  compactLayout.addEventListener('change', listener)
+  return () => compactLayout.removeEventListener('change', listener)
+}
+const isCompact = () => compactLayout.matches
+
+function SectionIntro({ title, lead, children }) {
+  const mobile = useSyncExternalStore(subscribeToLayout, isCompact)
+  if (!mobile) return <><h2>{title}</h2><p>{lead} {children}</p></>
+
+  return (
+    <details className="section-disclosure">
+      <summary>
+        <h2>{title}</h2>
+        <span className="section-preview">{lead}</span>
+      </summary>
+      <p>{children}</p>
+    </details>
+  )
+}
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -13,6 +34,46 @@ export default function Home() {
   const [preview, setPreview] = useState(null)
   const [draft, setDraft] = useState('')
   const dialog = useRef(null)
+  const caption = useRef(null)
+  const menuToggle = useRef(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    const header = menuToggle.current.closest('header')
+    const mobile = window.matchMedia('(max-width: 620px)')
+    function dismissOutside(event) {
+      if (!header.contains(event.target)) setMenuOpen(false)
+    }
+    function dismissOnEscape(event) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false)
+        menuToggle.current.focus()
+      }
+    }
+    function resetMenu() { setMenuOpen(false) }
+    document.addEventListener('pointerdown', dismissOutside)
+    document.addEventListener('focusin', dismissOutside)
+    document.addEventListener('keydown', dismissOnEscape)
+    mobile.addEventListener('change', resetMenu)
+    return () => {
+      document.removeEventListener('pointerdown', dismissOutside)
+      document.removeEventListener('focusin', dismissOutside)
+      document.removeEventListener('keydown', dismissOnEscape)
+      mobile.removeEventListener('change', resetMenu)
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view')
+        observer.disconnect()
+      }
+    }, { threshold: 0.75 })
+    observer.observe(caption.current)
+    return () => observer.disconnect()
+  }, [])
 
   function showPreview(item) {
     setPreview(item)
@@ -43,8 +104,10 @@ export default function Home() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <header className="mast wrap" id="home">
-        <a className="brand" href="#home">Wild Ceylon Safari</a>
-        <button className="menu-toggle" aria-expanded={menuOpen} aria-controls="navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close ×' : 'Menu ☰'}</button>
+        <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>Wild Ceylon Safari</a>
+        <button ref={menuToggle} className="menu-toggle" aria-expanded={menuOpen} aria-controls="navigation" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className="menu-icon" aria-hidden="true" />{menuOpen ? 'Close' : 'Menu'}
+        </button>
         <nav id="navigation" className={menuOpen ? 'open' : ''} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
           <a href="#home">Home</a><a href="#services">Services</a><a  href="#contact">Enquire</a><a href="#about">About us</a><a className="pill"  href="#safaris">Explore</a>
         </nav>
@@ -66,12 +129,20 @@ export default function Home() {
           <button className="pill">Plan my safari</button>
         </form>
         <section className="feature wrap" id="safaris">
-          <div className="intro"><span className="eyebrow">Our safaris</span><h2>A safari for<br />every kind of explorer.</h2><p>Find a national park that speaks to your sense of adventure.</p><a className="pill" href="#contact">Plan a safari</a></div>
+          <div className="intro"><span className="eyebrow">Our safaris</span><SectionIntro title={<>A safari for <br />every kind of explorer.</>} lead="Every journey into the wild tells a different story.">Discover Sri Lanka's breathtaking national parks, encounter extraordinary wildlife, and explore some of the island's most beautiful natural landscapes. Your next unforgettable safari adventure begins here.</SectionIntro><a className="pill" href="#contact">Plan a safari</a></div>
           <PhotoCarousel label="safaris" items={parks} action="Explore safari" onSelect={showPreview} />
         </section>
         <section className="about wrap" id="about">
-          <img src={photos.look.src} alt={photos.look.alt} loading="lazy" />
-          <div><span className="eyebrow">Wild Ceylon Safari</span><h2>Slow down.<br />Look closer.<br />Feel the wild.</h2><p>Explore Sri Lanka’s national parks with a guide, while we photograph the wildlife and the moments in between.</p><a className="pill" href="#services">Our services</a></div>
+          <figure className="about-photo">
+            <img src={photos.look.src} alt="A leopard looking out from tall grass" loading="lazy" />
+            <figcaption className="card-copy" ref={caption}>
+              <span>A glimpse through the grass</span>
+              <p>For a moment, the leopard lifts its head above the grass, its whiskers catching the light.</p>
+            </figcaption>
+            
+          </figure>
+          <div><span className="eyebrow">Wild Ceylon Safari</span><SectionIntro title={<>Slow down. Look closer.<br />Feel the wild.</>} lead="Explore Sri Lanka’s national parks with an experienced safari guide, discovering breathtaking landscapes and extraordinary 
+            wildlife along the way.">From unforgettable animal encounters to the quiet beauty of nature, we capture the wildlife, the little details, and the special moments in between - creating memories of your journey that last a lifetime.</SectionIntro><a className="pill" href="#services">Our services</a></div>
         </section>
         <section className="care wrap" id="services">
           <h2>Good journeys begin with care.</h2>
@@ -82,7 +153,11 @@ export default function Home() {
           </div>
         </section>
         <section className="feature journal wrap">
-          <div className="intro"><span className="eyebrow">From the journal</span><h2>A little inspiration for your journey.</h2><button className="pill" onClick={() => showPreview(stories[0])}>Read a story</button></div>
+          <div className="intro"><span className="eyebrow">From the journal</span><SectionIntro title={<>A little inspiration for your journey.</>} lead="Every journey into the wild begins with a little curiosity.">Discover inspiring wildlife encounters, breathtaking natural landscapes, and unforgettable moments from across Sri Lanka. Let these glimpses of the wild spark your imagination and inspire your next extraordinary safari adventure.</SectionIntro>
+          <button className="pill" onClick={() => showPreview(stories[0])}>Read a story</button>
+          
+          
+          </div>
           <PhotoCarousel label="stories" items={stories} action="Read story" onSelect={showPreview} />
         </section>
         <section className="contact" id="contact"><div className="contact-inner wrap">
@@ -108,3 +183,4 @@ export default function Home() {
     </>
   )
 }
+
