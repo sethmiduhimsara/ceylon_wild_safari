@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+﻿import { Children, useEffect, useRef, useState } from 'react'
 
 function scrollCard(row, direction) {
   if (row.children.length < 2) return
@@ -7,7 +7,8 @@ function scrollCard(row, direction) {
   row.scrollBy({ left: direction * step, behavior: reducedMotion ? 'instant' : 'smooth' })
 }
 
-export default function PhotoCarousel({ label, items, action, onSelect }) {
+export default function PhotoCarousel({ label, items, action, onSelect, children }) {
+  const count = items?.length ?? Children.count(children)
   const track = useRef(null)
 
   const [paused, setPaused] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -21,7 +22,7 @@ export default function PhotoCarousel({ label, items, action, onSelect }) {
   }, [])
 
   useEffect(() => {
-    if (paused || interacting || items.length < 2) return
+    if (paused || interacting || count < 2) return
     const row = track.current
     const timer = window.setInterval(() => {
       const bounds = row.getBoundingClientRect()
@@ -35,7 +36,7 @@ export default function PhotoCarousel({ label, items, action, onSelect }) {
       }
     }, 5000)
     return () => window.clearInterval(timer)
-  }, [paused, interacting, items.length])
+  }, [paused, interacting, count])
 
   function move(direction) {
     scrollCard(track.current, direction)
@@ -55,7 +56,7 @@ export default function PhotoCarousel({ label, items, action, onSelect }) {
             move(event.key === 'ArrowRight' ? 1 : -1)
           }
         }}>
-        {items.map(item => (
+        {children ?? items.map(item => (
           <article className="photo-card" key={item.title}>
             <img src={item.photo.src} alt={item.photo.alt} loading="lazy" />
             <div className="card-copy">
@@ -68,7 +69,7 @@ export default function PhotoCarousel({ label, items, action, onSelect }) {
       </div>
       <div className="gallery-controls" aria-label={label + ' controls'}>
         <button aria-label={'Previous ' + label} onClick={() => move(-1)}>←</button>
-        {items.length > 1 && (
+        {count > 1 && (
           <button aria-label={(paused ? 'Play ' : 'Pause ') + label + ' auto-scroll'}
             onClick={() => setPaused(value => !value)}>
             <span aria-hidden="true">{paused ? '▶' : 'Ⅱ'}</span>
@@ -79,4 +80,5 @@ export default function PhotoCarousel({ label, items, action, onSelect }) {
     </div>
   )
 }
+
 

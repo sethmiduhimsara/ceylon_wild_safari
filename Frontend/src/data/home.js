@@ -38,5 +38,5 @@ export const parks = [
 export const stories = [
   { title: 'A different view from the jeep', subtitle: 'Field notes · Elephants', photo: photos.elephant, detail: 'When an elephant comes into view, take a moment before lifting the camera. Watch the tip of its trunk and the slow movement of its ears. Those small details can tell the story of an encounter.' },
   { title: 'The colours of the forest', subtitle: 'Field notes · Birdlife', photo: photos.peacock, detail: 'An open peacock tail fills the frame with colour. Look closer and the pattern breaks into individual feathers, each catching the light a little differently.' },
-  { title: 'Among the branches', subtitle: 'Field notes · Leopards', photo: photos.hero, detail: 'Look along a branch before looking up through the leaves. A paw resting against bark or a tail hanging below the canopy can be the first detail you notice.' },
+  { title: 'Among the branches', subtitle: 'Field notes · Leopards', photo: photos.yala, detail: 'Look along a branch before looking up through the leaves. A paw resting against bark or a tail hanging below the canopy can be the first detail you notice.' },
 ]

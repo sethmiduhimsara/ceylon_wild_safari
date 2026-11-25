@@ -1,0 +1,8 @@
+.service-page .mast .brand {
+  background: white;
+  color: var(--forest);
+}
+
+.service-page .mast .brand::after {
+  content: none;
+}

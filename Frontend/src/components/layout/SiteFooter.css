@@ -1,0 +1,11 @@
+.site-footer { background: var(--cream); padding: clamp(32px, 4vw, 64px) 0 24px; }
+.footer-inner { width: min(88%, 1320px); margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 8%; }
+.footer-inner p { max-width: 47ch; font-size: .92rem; margin-top: 12px; }
+.footer-description { text-align: justify; hyphens: auto; line-height: 1.65; }
+.footer-links, .footer-bottom { display: flex; align-items: baseline; flex-wrap: wrap; gap: 14px 22px; }
+.footer-links { justify-content: flex-end; }
+.footer-bottom { grid-column: 1/-1; border-top: 1px solid #283b2526; padding-top: 18px; justify-content: space-between; }
+@media (max-width: 620px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-links { justify-content: flex-start; }
+}

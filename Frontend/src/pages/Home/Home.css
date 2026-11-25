@@ -1,6 +1,10 @@
 .wrap {
+  --section-spacing: clamp(70px, 8vw, 130px);
   width: max(96%, 1440px);
   margin-inline: auto;
+}
+@media (800px < width < 1440px) {
+  .wrap { width: 96%; }
 }
 .mast {
   display: flex;
@@ -194,7 +198,7 @@ p {
 .feature,
 .about,
 .care {
-  margin-block: clamp(70px, 8vw, 130px);
+  margin-block: var(--section-spacing);
 }
 .feature {
   display: grid;

@@ -1,0 +1,105 @@
+.service-content p {
+  margin-top: 12px;
+}
+.service-hero {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5%;
+  padding: clamp(50px, 6vw, 100px) 0 var(--section-spacing);
+}
+.service-hero p,
+.service-enquiry p {
+  max-width: 42ch;
+}
+.service-hero .pill {
+  margin-top: 24px;
+}
+.service-collage {
+  display: grid;
+  grid-template-columns: 28% 13% 59%;
+  align-items: center;
+}
+.service-collage img {
+  grid-row: 1;
+  border-radius: 0px;
+}
+.service-collage img:first-child {
+  grid-column: 1/3;
+  aspect-ratio: 1.45;
+}
+.service-collage img:last-child {
+  grid-column: 2/4;
+  aspect-ratio: 1.5;
+}
+.service-options { margin-top: 0; }
+.service-options .gallery { width: 100%; }
+.service-options .service-card {
+  flex-basis: 80%;
+  min-height: min-content;
+}
+.service-card.photo-card::after {
+  background: linear-gradient(transparent 15%, rgb(13 25 11 / 72%) 60%, rgb(13 25 11 / 94%));
+}
+.service-card .eyebrow { margin-bottom: 10px; }
+@media (min-width: 801px) {
+  .service-options { grid-template-columns: 34% minmax(0, 1fr); }
+  .service-options .intro { max-width: 48ch; }
+  .service-options .service-card { flex-basis: 60%; aspect-ratio: 4 / 5; }
+}
+@media (max-width: 620px) {
+  .service-card .section-disclosure { margin-bottom: 0; border-color: #ffffff55; }
+  .service-card summary::after { border-color: currentColor; }
+  .service-card .section-preview { font-size: .85rem; }
+}
+.service-planning {
+  margin-block: var(--section-spacing);
+}
+.service-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4%;
+  margin: 32px 0 40px;
+}
+.service-steps article {
+  border-top: 1px solid #283b2540;
+  padding-top: 20px;
+}
+.service-steps h3 {
+  font-size: clamp(1.45rem, 2vw, 2.1rem);
+}
+.service-enquiry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(28px, 4vw, 64px);
+  border-radius: 20px;
+  background: var(--forest);
+  color: var(--cream);
+}
+.service-enquiry .pill {
+  min-width: 150px;
+}
+.service-note {
+  font-size: 0.85rem;
+}
+@media (max-width: 700px) {
+  .service-hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .service-collage {
+    max-width: 520px;
+  }
+  .service-steps {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .service-enquiry {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+
