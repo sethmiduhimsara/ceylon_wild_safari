@@ -1,0 +1,41 @@
+.explore-page .mast .brand { color: var(--forest); background: white; }
+.explore-page .mast .brand::after { content: none; }
+.explore-intro { padding: clamp(42px, 5vw, 86px) 0 24px; text-align: center; }
+.explore-intro p { margin: 18px auto 24px; max-width: 48ch; }
+.explore-gallery-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 3.55;
+}
+.explore-gallery-stage img {
+  position: absolute;
+  width: 33%;
+  height: 100%;
+  top: 50%;
+  border-radius: 14px;
+  transition: left .45s ease, transform .45s ease;
+}
+.explore-gallery-stage [data-position="0"] { left: 50%; transform: translate(-50%, -50%); z-index: 3; }
+.explore-gallery-stage [data-position="-1"] { left: 27%; transform: translate(-50%, -50%) scale(.92); z-index: 2; }
+.explore-gallery-stage [data-position="1"] { left: 73%; transform: translate(-50%, -50%) scale(.92); z-index: 2; }
+.explore-gallery-stage [data-position="-2"] { left: 13%; transform: translate(-50%, -50%) scale(.8); }
+.explore-gallery-stage [data-position="2"] { left: 87%; transform: translate(-50%, -50%) scale(.8); }
+.explore-parks { margin-top: clamp(38px, 5vw, 86px); }
+.explore-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(16px, 2vw, 32px); list-style: none; margin: 24px 0 0; padding: 0; }
+.explore-list .photo-card { border-radius: 14px; aspect-ratio: 1 / 1.08; }
+.explore-list .photo-card::after { background: linear-gradient(transparent 12%, rgb(13 25 11 / 90%) 92%); }
+.explore-enquiry { margin: 36px 0 var(--section-spacing); padding: clamp(28px, 4vw, 64px); background: var(--forest); color: var(--cream); border-radius: 18px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.explore-enquiry p { max-width: 48ch; margin-top: 12px; }
+.explore-enquiry .pill { flex-shrink: 0; }
+@media (max-width: 900px) {
+  .explore-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 620px) {
+  .explore-list { grid-template-columns: 1fr; }
+  .explore-gallery-stage { aspect-ratio: 1.85; }
+  .explore-gallery-stage img { width: 53%; border-radius: 8px; }
+  .explore-gallery-stage [data-position="-2"] { left: 5%; }
+  .explore-gallery-stage [data-position="2"] { left: 95%; }
+  .explore-enquiry { flex-direction: column; align-items: flex-start; }
+}

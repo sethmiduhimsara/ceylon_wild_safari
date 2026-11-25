@@ -1,8 +1,10 @@
 ﻿import { useEffect, useRef, useState } from 'react'
+import SafariPreview from '../../components/safari/SafariPreview'
 import PhotoCarousel from '../../components/gallery/PhotoCarousel'
 import { parks, photos, stories } from '../../data/home'
 import heroPhoto from '../../assets/photos/hero1.png'
 import SectionIntro from '../../components/layout/SectionIntro'
+import { serviceEnquiryMessage } from '../../data/enquiry'
 import SiteHeader from '../../components/layout/SiteHeader'
 import SiteFooter from '../../components/layout/SiteFooter'
 import './Home.css'
@@ -54,12 +56,6 @@ export default function Home() {
   }
 
   const parkOptions = parks.map(item => <option key={item.park}>{item.park}</option>)
-  const enquiryMessages = {
-    photography: 'I’d like to ask about photography throughout my safari.',
-    guiding: 'I’d like to plan a guided safari.',
-  }
-  const service = new URLSearchParams(window.location.search).get('service')
-
   return (
     <>
       <SiteHeader />
@@ -70,7 +66,7 @@ export default function Home() {
             <span className="eyebrow">Sri Lankan wildlife experiences</span>
             <h1>Your next great<br />wildlife story.</h1>
             <p>Guided safaris and wildlife photography in the national parks of Sri Lanka.</p>
-            <a className="pill light" href="#safaris">Explore our safaris <span aria-hidden="true">↗</span></a>
+            <a className="pill light" href="/explore">Explore our safaris <span aria-hidden="true">↗</span></a>
           </div>
         </section>
         <form className="planner" aria-label="Plan a safari" onSubmit={event => { event.preventDefault(); planSafari(park) }}>
@@ -119,7 +115,7 @@ export default function Home() {
             <label>National park<select value={park} onChange={e => setPark(e.target.value)}><option value="">Help me choose</option>{parkOptions}</select></label>
             <label>Travel date<input type="date" value={date} onChange={e => setDate(e.target.value)} /></label>
             <label>Number of guests<input required type="number" min="1" value={guests} onChange={e => setGuests(e.target.value)} /></label>
-            <label>Your message<textarea name="message" rows="2" defaultValue={Object.hasOwn(enquiryMessages, service) ? enquiryMessages[service] : ''} /></label>
+            <label>Your message<textarea name="message" rows="2" defaultValue={serviceEnquiryMessage(window.location.search)} /></label>
             <p className="draft-note">Prepare a draft to save. Online booking enquiries will open soon.</p>
             <button className="pill light">Prepare enquiry</button>
             {draft && <label role="status">Your enquiry draft is ready to copy<textarea rows="6" readOnly value={draft} onFocus={e => e.target.select()} /></label>}
@@ -128,12 +124,12 @@ export default function Home() {
         </div></section>
       </main>
       <SiteFooter><details><summary>Photo credits</summary><ul>{Object.values(photos).map(photo => <li key={photo.file}><a href={'https://commons.wikimedia.org/wiki/File:' + encodeURIComponent(photo.file)}>{photo.file}</a> — {photo.author}</li>)}</ul><p>Images resized and cropped for display. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p></details></SiteFooter>
-      <dialog ref={dialog} aria-labelledby="preview-title" onClick={event => { if (event.target === dialog.current) dialog.current.close() }}>
-        {preview && <article><button className="dialog-close" aria-label="Close preview" onClick={() => dialog.current.close()}>×</button><img src={preview.photo.src} alt={preview.photo.alt} /><div><span className="eyebrow">{preview.subtitle}</span><h2 id="preview-title">{preview.title}</h2><p>{preview.detail}</p>{preview.park && <button className="pill" onClick={() => planSafari(preview.park)}>Enquire about this safari</button>}</div></article>}
-      </dialog>
+      <SafariPreview dialogRef={dialog} item={preview} onEnquire={planSafari} />
     </>
   )
 }
+
+
 
 
 

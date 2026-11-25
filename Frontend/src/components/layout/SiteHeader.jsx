@@ -1,6 +1,6 @@
 ﻿import { useEffect, useRef, useState } from 'react'
 
-export default function SiteHeader({ services = false }) {
+export default function SiteHeader({ currentPage = 'home' }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuToggle = useRef(null)
 
@@ -39,13 +39,15 @@ export default function SiteHeader({ services = false }) {
           <span className="menu-icon" aria-hidden="true" />{menuOpen ? 'Close' : 'Menu'}
         </button>
         <nav id="navigation" className={menuOpen ? 'open' : ''} aria-label="Main navigation" onClick={() => setMenuOpen(false)}>
-          <a href="/#home">Home</a>
-          <a href="/services" aria-current={services ? 'page' : undefined}>Services</a>
-          <a href="/#about">About us</a>
-          <a href="/#contact">Contact</a>
-          <a className="pill" href="/#safaris">Explore</a>
+          <a href="/#home" aria-current={currentPage === 'home' ? 'page' : undefined}>Home</a>
+          <a href="/services" aria-current={currentPage === 'services' ? 'page' : undefined}>Services</a>
+          <a href="/about" aria-current={currentPage === 'about' ? 'page' : undefined}>About us</a>
+          <a href="/contact" aria-current={currentPage === 'contact' ? 'page' : undefined}>Contact</a>
+          <a className="pill" href="/explore" aria-current={currentPage === 'explore' ? 'page' : undefined}>Explore</a>
         </nav>
       </header>
     </>
   )
 }
+
+

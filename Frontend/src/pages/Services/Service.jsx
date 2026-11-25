@@ -31,7 +31,7 @@ export default function Service() {
 
   return (
     <div className="service-page">
-      <SiteHeader services />
+      <SiteHeader currentPage="services" />
       <main id="main" className="service-content wrap">
         <section className="service-hero">
           <div>
@@ -39,7 +39,7 @@ export default function Service() {
             <SectionIntro heading="h1" title={<>Be in the moment.<br />We’ll capture<br />the story.</>} lead="Photography throughout your safari, with a guide alongside your journey.">
               Experience the wild and bring home the moments that matter.
             </SectionIntro>
-            <a className="pill" href="/#contact">Plan your safari <span aria-hidden="true">→</span></a>
+            <a className="pill" href="/contact">Plan your safari <span aria-hidden="true">→</span></a>
           </div>
           <div className="service-collage">
             <img src={leopard} alt="" />
@@ -58,7 +58,7 @@ export default function Service() {
               <div className="card-copy">
                 <span className="eyebrow">{item.label}</span>
                 <SectionIntro heading="h3" title={item.name} lead={item.lead}>{item.text}</SectionIntro>
-                <a className="pill light" href={'/?service=' + item.enquiry + '#contact'}>{item.action}<span aria-hidden="true">→</span></a>
+                <a className="pill light" href={'/contact?service=' + item.enquiry + '#enquiry'}>{item.action}<span aria-hidden="true">→</span></a>
               </div>
             </article>
           ))}</PhotoCarousel>
@@ -73,7 +73,7 @@ export default function Service() {
           </div>
           <div className="service-enquiry">
             <div><h2>Your safari. Your story.</h2><p>Let’s talk about the experience you have in mind. We’ll help you plan the guiding and photography.</p></div>
-            <a className="pill light" href="/#contact">Book now <span aria-hidden="true">→</span></a>
+            <a className="pill light" href="/contact">Book now <span aria-hidden="true">→</span></a>
           </div>
           <p className="service-note">Photography coverage, photo delivery and service pricing are agreed with our team when you enquire.</p>
         </section>
@@ -82,6 +82,7 @@ export default function Service() {
     </div>
   )
 }
+
 
 
 
